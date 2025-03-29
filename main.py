@@ -43,6 +43,25 @@ def calculate_multiset_of_distances(restriction_sites):
     distances.sort()
     return distances
 
+def get_pairwise_distances(points):
+    """Return sorted multiset of pairwise distances."""
+    distances = sorted(abs(b - a) for a, b in combinations(points, 2))
+    return distances
+
+def naive_restriction_sites_reconstruction(distance_multiset):
+    width = max(distance_multiset)
+    potential_sites = range(1, width)
+    solution = None
+
+    for subset_size in range(1, len(potential_sites)+1):
+        for subset in combinations(potential_sites, subset_size):
+            candidate = [0] + list(subset) + [width]
+            if get_pairwise_distances(candidate) == sorted(distance_multiset):
+                solution = candidate
+                return sorted(solution)
+
+    return "No solution found"
+
 
 # Example usage
 if __name__ == "__main__":
@@ -61,3 +80,6 @@ if __name__ == "__main__":
 
     multiset_distances = calculate_multiset_of_distances(sites)
     print("Multiset of distances between restriction sites:", multiset_distances)
+
+    reconstruction = naive_restriction_sites_reconstruction(multiset_distances)
+    print("Reconstructed restriction sites:", reconstruction)

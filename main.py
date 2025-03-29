@@ -62,6 +62,42 @@ def naive_restriction_sites_reconstruction(distance_multiset):
 
     return "No solution found"
 
+def partial_digest(L):
+    width = max(L)
+    L.remove(width)
+    X = [0, width]
+    place(L, X, width)
+
+def place(L, X, width):
+    if not L:
+        X.sort()
+        print("Solution found:", X)
+        return
+
+    y = max(L)
+    Dy = [abs(y - x) for x in X]
+
+    # Try placing y
+    if all(Dy.count(dist) <= L.count(dist) for dist in Dy):
+        for dist in Dy:
+            L.remove(dist)
+        X.append(y)
+        place(L, X, width)
+        X.remove(y)
+        for dist in Dy:
+            L.append(dist)
+
+    # Try placing width - y
+    Dy = [abs(width - y - x) for x in X]
+    if all(Dy.count(dist) <= L.count(dist) for dist in Dy):
+        for dist in Dy:
+            L.remove(dist)
+        X.append(width - y)
+        place(L, X, width)
+        X.remove(width - y)
+        for dist in Dy:
+            L.append(dist)
+
 
 # Example usage
 if __name__ == "__main__":
@@ -73,9 +109,9 @@ if __name__ == "__main__":
     #print("DNA2 sequence:", dna2)
     #print("DNA3 sequence:", dna3)
 
-    restriction_seq = "GAATTC"  # primer restrikcijskega reza (lahko spremeniš)
+    restriction_seq = "GTGTG"  # primer restrikcijskega reza (lahko spremeniš)
 
-    sites = find_restriction_sites(dna2, restriction_seq)
+    sites = find_restriction_sites(dna1, restriction_seq)
     print(f"Restriction sequence '{restriction_seq}' found at indices:", sites)
 
     multiset_distances = calculate_multiset_of_distances(sites)
@@ -83,3 +119,6 @@ if __name__ == "__main__":
 
     reconstruction = naive_restriction_sites_reconstruction(multiset_distances)
     print("Reconstructed restriction sites:", reconstruction)
+
+    print("Starting Branch and Bound approach:")
+    partial_digest(multiset_distances.copy())

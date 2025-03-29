@@ -1,3 +1,5 @@
+from itertools import combinations
+
 def read_dna_file(filepath):
     """
     Reads a DNA sequence from a text file and returns it as a string.
@@ -27,6 +29,21 @@ def find_restriction_sites(dna_sequence, restriction_sequence):
     return sites
 
 
+def calculate_multiset_of_distances(restriction_sites):
+    """
+    Calculates multiset of distances between all pairs of restriction sites.
+
+    :param restriction_sites: List of indices of restriction sites.
+    :return: Sorted list representing the multiset of distances.
+    """
+    distances = []
+    for site1, site2 in combinations(restriction_sites, 2):
+        distance = abs(site2 - site1)
+        distances.append(distance)
+    distances.sort()
+    return distances
+
+
 # Example usage
 if __name__ == "__main__":
     dna1 = read_dna_file('DNK1.txt')
@@ -41,3 +58,6 @@ if __name__ == "__main__":
 
     sites = find_restriction_sites(dna2, restriction_seq)
     print(f"Restriction sequence '{restriction_seq}' found at indices:", sites)
+
+    multiset_distances = calculate_multiset_of_distances(sites)
+    print("Multiset of distances between restriction sites:", multiset_distances)

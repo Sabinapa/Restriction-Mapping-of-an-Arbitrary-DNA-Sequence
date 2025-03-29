@@ -1,16 +1,22 @@
-# This is a sample Python script.
+def read_dna_file(filepath):
+    """
+    Reads a DNA sequence from a text file and returns it as a string.
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+    :param filepath: Path to the DNA text file.
+    :return: DNA sequence as a string.
+    """
+
+    with open(filepath, 'r') as file:
+        dna_sequence = file.read().strip()
+    return dna_sequence
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# Example usage
+if __name__ == "__main__":
+    dna1 = read_dna_file('DNK1.txt')
+    dna2 = read_dna_file('DNK2.txt')
+    dna3 = read_dna_file('DNK3.txt')
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    print("DNA1 sequence:", dna1)
+    #print("DNA2 sequence:", dna2)
+    #print("DNA3 sequence:", dna3)
